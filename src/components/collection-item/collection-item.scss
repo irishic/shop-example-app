@@ -1,0 +1,21 @@
+.collection-item{
+	height: 350px;
+	display: grid;
+	grid-template-rows: 19fr 1fr;
+	grid-template-areas: 
+	"content" 
+	"footer";
+
+	&__footer{
+		padding: 5px 0;
+		font-size: 18px;
+		grid-area: footer;
+		display: flex;
+		justify-content: space-between;
+	}
+	&__image{
+		grid-area: content;
+		background-size: cover;
+		background-position: center;
+	}
+}
