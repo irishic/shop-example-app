@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import MenuItem from "../menu-item/menu-item.component";
 
-import './directory.component.scss';
+import "./directory.component.scss";
 
 class Directory extends Component {
   constructor(props) {
@@ -50,7 +50,6 @@ class Directory extends Component {
     return (
       <div className="directory-menu">
         {this.state.sections.map(({ id, ...itemAttrs }) => {
-          console.log(id);
           return <MenuItem key={id} {...itemAttrs} />;
         })}
       </div>
