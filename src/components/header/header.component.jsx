@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
 import { ReactComponent as Logo } from "../../assets/logo.svg";
 
@@ -17,13 +18,16 @@ function Header({ currentUser }) {
         <Link to="/shop">Shop</Link>
         <Link to="/contact">Contact</Link>
         {currentUser ? (
-          <div
-            onClick={() => {
-              auth.signOut();
-            }}
-          >
-            Sign out
-          </div>
+          <>
+            <div>{currentUser.email}</div>
+            <div
+              onClick={() => {
+                auth.signOut();
+              }}
+            >
+              Sign out
+            </div>
+          </>
         ) : (
           <Link to="/signin">Sign in</Link>
         )}
@@ -32,4 +36,8 @@ function Header({ currentUser }) {
   );
 }
 
-export default Header;
+const mapStateToProps = (state) => ({
+  currentUser: state.user.currentUser,
+});
+
+export default connect(mapStateToProps)(Header);
