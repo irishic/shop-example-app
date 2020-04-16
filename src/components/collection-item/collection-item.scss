@@ -1,21 +1,51 @@
-.collection-item{
-	height: 350px;
-	display: grid;
-	grid-template-rows: 19fr 1fr;
-	grid-template-areas: 
-	"content" 
-	"footer";
+.collection-item {
+  display: flex;
+  flex-direction: column;
+  height: 450px;
+  align-items: center;
+  position: relative;
 
-	&__footer{
-		padding: 5px 0;
-		font-size: 18px;
-		grid-area: footer;
-		display: flex;
-		justify-content: space-between;
-	}
-	&__image{
-		grid-area: content;
-		background-size: cover;
-		background-position: center;
-	}
+  &:hover {
+    .collection-item__image {
+      opacity: 0.8;
+    }
+
+    .custom-button {
+      opacity: 0.85;
+      display: block;
+    }
+  }
+
+  .custom-button {
+    width: 80%;
+    opacity: 0.7;
+    position: absolute;
+    bottom: 40px;
+    display: none;
+  }
+
+  &__image {
+    width: 100%;
+    height: 95%;
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 5px;
+  }
+
+  &__footer {
+    width: 100%;
+    height: 5%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+  }
+
+  &__name {
+    width: 90%;
+    margin-bottom: 15px;
+  }
+
+  &__price {
+    width: 10%;
+  }
 }
