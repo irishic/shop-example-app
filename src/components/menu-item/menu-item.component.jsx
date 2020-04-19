@@ -7,7 +7,7 @@ function MenuItem({ title, imageUrl, size, history, match, linkUrl }) {
   return (
 	<div 
 		className={`menu-item ${size}`}
-		onClick={()=>{history.push(`${match.url}/${linkUrl}`)}}
+		onClick={()=>{history.push(`/shop/${linkUrl}`)}}
 	>
       <div
         className="background-image"
