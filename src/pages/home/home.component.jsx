@@ -1,14 +1,14 @@
-import React from "react";
+import React from 'react';
 
-import Directory from '../../components/directory/directory.component'
+import Directory from '../../components/directory/directory.component';
+
+import { HomePageContainer } from './home.styles';
 
 function HomePage() {
   return (
-    <div className="home-page">
-      <div className="directory-menu">
-        <Directory />
-      </div>
-    </div>
+    <HomePageContainer>
+      <Directory />
+    </HomePageContainer>
   );
 }
 
