@@ -1,16 +1,16 @@
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/auth";
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
 
 const config = {
-  apiKey: "AIzaSyDp72-uWq_G73pHXBLEjqF78tCR7eLGs5s",
-  authDomain: "shop-sample-db.firebaseapp.com",
-  databaseURL: "https://shop-sample-db.firebaseio.com",
-  projectId: "shop-sample-db",
-  storageBucket: "shop-sample-db.appspot.com",
-  messagingSenderId: "1081876783727",
-  appId: "1:1081876783727:web:5ce42d41461bfcf9c9e39a",
-  measurementId: "G-YQEG29G1TK"
+  apiKey: 'AIzaSyDp72-uWq_G73pHXBLEjqF78tCR7eLGs5s',
+  authDomain: 'shop-sample-db.firebaseapp.com',
+  databaseURL: 'https://shop-sample-db.firebaseio.com',
+  projectId: 'shop-sample-db',
+  storageBucket: 'shop-sample-db.appspot.com',
+  messagingSenderId: '1081876783727',
+  appId: '1:1081876783727:web:5ce42d41461bfcf9c9e39a',
+  measurementId: 'G-YQEG29G1TK',
 };
 
 firebase.initializeApp(config);
@@ -19,7 +19,7 @@ export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
 const provider = new firebase.auth.GoogleAuthProvider();
-provider.setCustomParameters({ prompt: "select_account" });
+provider.setCustomParameters({ prompt: 'select_account' });
 
 export const signInWithGoogle = () => auth.signInWithPopup(provider);
 
@@ -36,11 +36,41 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     try {
       await userRef.set({ displayName, email, createdAt, ...additionalData });
     } catch (e) {
-      console.warn("error creating user " + e.message);
+      console.warn('error creating user ' + e.message);
     }
   }
 
   return userRef;
+};
+
+export const addCollectionAndItems = async (collectionKey, objectsToAdd) => {
+  const collectionRef = firestore.collection(collectionKey);
+
+  const batch = firestore.batch();
+  objectsToAdd.forEach((obj) => {
+    const newDocRef = collectionRef.doc();
+    batch.set(newDocRef, obj);
+  });
+
+  return await batch.commit();
+};
+
+export const convertCollectionsSnapshotToMap = (collections) => {
+  const transformedCollection = collections.docs.map((doc) => {
+    const { title, items } = doc.data();
+
+    return {
+      routeName: encodeURI(title.toLowerCase()),
+      id: doc.id,
+      title,
+      items,
+    };
+  });
+
+  return transformedCollection.reduce((accumulator, collection) => {
+    accumulator[collection.title.toLowerCase()] = collection;
+    return accumulator;
+  }, {});
 };
 
 export default firebase;
