@@ -29,7 +29,9 @@ function Header({ currentUser, hidden, signOutStart }) {
         <OptionLink to="/contact">Contact</OptionLink>
         {currentUser ? (
           <>
-            <OptionDiv>{currentUser.email}</OptionDiv>
+            <OptionDiv>
+              {currentUser.displayName || currentUser.email}
+            </OptionDiv>
             <OptionDiv onClick={signOutStart}>Sign out</OptionDiv>
           </>
         ) : (

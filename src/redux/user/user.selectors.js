@@ -11,3 +11,13 @@ export const selectUserError = createSelector(
   [selectUser],
   (user) => user.error,
 );
+
+export const selectSignUpError = createSelector(
+  [selectUser],
+  (user) => user.signUpFormError,
+);
+
+export const selectSignInError = createSelector(
+  [selectUser],
+  (user) => user.signInFormError,
+);

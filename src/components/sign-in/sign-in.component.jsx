@@ -7,15 +7,19 @@ import CustomButton from '../custom-button/custom-button.component';
 import {
   googleSignInStart,
   emailSignInStart,
+  clearErrors,
 } from '../../redux/user/user.actions';
 
 import './sign-in.scss';
 import { createStructuredSelector } from 'reselect';
-import { selectUserError } from '../../redux/user/user.selectors';
+import { selectSignInError } from '../../redux/user/user.selectors';
 
 class SignIn extends Component {
   constructor(props) {
+    const { clearError } = props;
     super(props);
+
+    clearError();
 
     this.state = {
       email: '',
@@ -90,10 +94,11 @@ const mapDispatchToProps = (dispatch) => ({
   googleSignInStart: () => dispatch(googleSignInStart()),
   emailSignInStart: (email, password) =>
     dispatch(emailSignInStart({ email, password })),
+  clearError: () => dispatch(clearErrors({ name: 'signInFormError' })),
 });
 
 const mapStateToProps = createStructuredSelector({
-  errorMessage: selectUserError,
+  errorMessage: selectSignInError,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

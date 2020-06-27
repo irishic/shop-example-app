@@ -1,71 +1,51 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-import FormInput from "../form-input/form-input.component";
-import CustomButton from "../custom-button/custom-button.component";
+import FormInput from '../form-input/form-input.component';
+import CustomButton from '../custom-button/custom-button.component';
+import { signUpStart, clearErrors } from '../../redux/user/user.actions';
 
-import { auth, createUserProfileDocument } from "../../firebase/firebase.utils";
-
-import "./sign-up.scss";
+import './sign-up.scss';
+import { createStructuredSelector } from 'reselect';
+import { selectSignUpError } from '../../redux/user/user.selectors';
 
 class SignUp extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    const { clearError } = props;
+    super(props);
+
+    clearError();
 
     this.state = {
-      displayName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      errorMessage: ""
+      displayName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
     };
   }
 
-  handleSumit = async event => {
+  handleSumit = async (event) => {
     event.preventDefault();
     const { displayName, email, password, confirmPassword } = this.state;
+    const { signUpStart } = this.props;
 
     if (password !== confirmPassword) {
       alert("passwords don't match");
       return;
     }
 
-    try {
-      const { user } = await auth.createUserWithEmailAndPassword(
-        email,
-        password
-      );
-
-      await createUserProfileDocument(user, { displayName });
-
-      this.setState({
-        displayName: "",
-        email: "",
-        password: "",
-        confirmPassword: ""
-      });
-    } catch (e) {
-      this.setState({ errorMessage: e.message });
-    }
+    signUpStart({ displayName, email, password });
   };
 
-  handleChange = event => {
+  handleChange = (event) => {
     const { name, value } = event.target;
 
     this.setState({ [name]: value });
-
-    if (this.state.errorMessage) {
-      this.setState({ errorMessage: "" });
-    }
   };
 
   render() {
-    const {
-      displayName,
-      email,
-      password,
-      confirmPassword,
-      errorMessage
-    } = this.state;
+    const { displayName, email, password, confirmPassword } = this.state;
+    const { errorMessage } = this.props;
     return (
       <div className="sign-up">
         <h2 className="title">I don't have an account</h2>
@@ -107,7 +87,7 @@ class SignUp extends Component {
             handleChange={this.handleChange}
           />
 
-          <div className="error-case">{errorMessage ? errorMessage : ""}</div>
+          <div className="error-case">{errorMessage ? errorMessage : ''}</div>
           <CustomButton type="submit">Sign up</CustomButton>
         </form>
       </div>
@@ -115,4 +95,13 @@ class SignUp extends Component {
   }
 }
 
-export default SignUp;
+const mapDispatchToProps = (dispatch) => ({
+  signUpStart: (payload) => dispatch(signUpStart(payload)),
+  clearError: () => dispatch(clearErrors({ name: 'signUpFormError' })),
+});
+
+const mapStateToProps = createStructuredSelector({
+  errorMessage: selectSignUpError,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
