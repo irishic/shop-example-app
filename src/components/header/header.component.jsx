@@ -15,6 +15,7 @@ import {
   OptionsContainer,
   OptionLink,
   OptionDiv,
+  Divider,
 } from './header.styles';
 import { signOutStart } from '../../redux/user/user.actions';
 
@@ -27,6 +28,7 @@ function Header({ currentUser, hidden, signOutStart }) {
       <OptionsContainer>
         <OptionLink to="/shop">Shop</OptionLink>
         <OptionLink to="/contact">Contact</OptionLink>
+        <Divider>|</Divider>
         {currentUser ? (
           <>
             <OptionDiv>

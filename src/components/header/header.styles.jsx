@@ -33,6 +33,11 @@ export const OptionLink = styled(Link)`
   ${OptionContainerStyles}
 `;
 
+export const Divider = styled.span`
+  ${OptionContainerStyles}
+  margin-top: -3px;
+`;
+
 export const OptionDiv = styled.div`
   ${OptionContainerStyles}
 `;
