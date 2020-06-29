@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import FormInput from '../form-input/form-input.component';
@@ -9,25 +9,14 @@ import './sign-up.scss';
 import { createStructuredSelector } from 'reselect';
 import { selectSignUpError } from '../../redux/user/user.selectors';
 
-class SignUp extends Component {
-  constructor(props) {
-    const { clearError } = props;
-    super(props);
+const SignUp = ({ signUpStart, errorMessage, clearError }) => {
+  const [displayName, setDisplayName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
-    clearError();
-
-    this.state = {
-      displayName: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-    };
-  }
-
-  handleSumit = async (event) => {
+  const handleSumit = async (event) => {
     event.preventDefault();
-    const { displayName, email, password, confirmPassword } = this.state;
-    const { signUpStart } = this.props;
 
     if (password !== confirmPassword) {
       alert("passwords don't match");
@@ -37,63 +26,57 @@ class SignUp extends Component {
     signUpStart({ displayName, email, password });
   };
 
-  handleChange = (event) => {
-    const { name, value } = event.target;
+  useEffect(() => {
+    clearError();
+  }, [clearError]);
 
-    this.setState({ [name]: value });
-  };
+  return (
+    <div className="sign-up">
+      <h2 className="title">I don't have an account</h2>
+      <span>Sing up with your email and password</span>
+      <form className="sign-up__form" onSubmit={handleSumit}>
+        <FormInput
+          label="Login"
+          type="text"
+          name="displayName"
+          value={displayName}
+          required={true}
+          handleChange={({ target }) => setDisplayName(target.value)}
+        />
 
-  render() {
-    const { displayName, email, password, confirmPassword } = this.state;
-    const { errorMessage } = this.props;
-    return (
-      <div className="sign-up">
-        <h2 className="title">I don't have an account</h2>
-        <span>Sing up with your email and password</span>
-        <form className="sign-up__form" onSubmit={this.handleSumit}>
-          <FormInput
-            label="Login"
-            type="text"
-            name="displayName"
-            value={displayName}
-            required={true}
-            handleChange={this.handleChange}
-          />
+        <FormInput
+          label="Email"
+          type="email"
+          name="email"
+          value={email}
+          required={true}
+          handleChange={({ target }) => setEmail(target.value)}
+        />
 
-          <FormInput
-            label="Email"
-            type="email"
-            name="email"
-            value={email}
-            required={true}
-            handleChange={this.handleChange}
-          />
+        <FormInput
+          label="Password"
+          type="password"
+          name="password"
+          value={password}
+          required={true}
+          handleChange={({ target }) => setPassword(target.value)}
+        />
 
-          <FormInput
-            label="Password"
-            type="password"
-            name="password"
-            value={password}
-            required={true}
-            handleChange={this.handleChange}
-          />
+        <FormInput
+          label="Confirm password"
+          type="password"
+          name="confirmPassword"
+          value={confirmPassword}
+          required={true}
+          handleChange={({ target }) => setConfirmPassword(target.value)}
+        />
 
-          <FormInput
-            label="Confirm password"
-            type="password"
-            name="confirmPassword"
-            value={confirmPassword}
-            required={true}
-            handleChange={this.handleChange}
-          />
-
-          <div className="error-case">{errorMessage ? errorMessage : ''}</div>
-          <CustomButton type="submit">Sign up</CustomButton>
-        </form>
-      </div>
-    );
-  }
-}
+        <div className="error-case">{errorMessage ? errorMessage : ''}</div>
+        <CustomButton type="submit">Sign up</CustomButton>
+      </form>
+    </div>
+  );
+};
 
 const mapDispatchToProps = (dispatch) => ({
   signUpStart: (payload) => dispatch(signUpStart(payload)),

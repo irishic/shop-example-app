@@ -6,6 +6,7 @@ import CollectionsOverviewContainer from '../../components/collections-overview/
 import CollectionPageContainer from '../collection/collection.container';
 import { fetchCollectionStart } from '../../redux/shop/shop.actions';
 
+// keep as class component example
 class Shop extends Component {
   unsubscribeFromSnapshot = null;
   componentDidMount() {
